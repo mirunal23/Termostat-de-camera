@@ -1,0 +1,562 @@
+A51 MACRO ASSEMBLER  ASM                                                                  05/25/2024 19:41:20 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\asm.obj
+ASSEMBLER INVOKED BY: C:\Program Files\C51\BIN\A51.EXE asm.a51 SET(SMALL) DEBUG PRINT(.\Listings\asm.lst) OBJECT(.\Objec
+                      ts\asm.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     org 0000h
+0000 7814              2         mov R0, #20 ; tensiunea de referinta din incapere
+0002 D280              3         setb P0.0
+0004 D281              4         setb P0.1  ; setez butoanele initial ca fiind neapasate
+                       5     
+0006 1116              6         acall init_timer ; Initializare Timer
+0008 111A              7         acall LCD
+000A 510B              8         ACALL HEART
+000C 5139              9         ACALL CARACTER
+000E 5167             10         ACALL OMULET
+0010 3184             11         acall ADC
+0012 31D0             12         acall display_humidity
+                      13     
+0014 80FE             14         sjmp $ ; Infinite loop to prevent re-running the setup
+                      15     
+                      16     ; Functie pentru initializarea Timer-ului 1
+0016                  17     init_timer:
+0016 438910           18         orl TMOD, #10h ; Setare Timer 1 in modul 1 (16-bit timer)
+0019 22               19         ret
+                      20     
+001A                  21     LCD:
+                      22         ; Initializare LCD
+001A 7438             23         mov a, #38h ; Afisare caractere pe o matrice de 5x7
+001C 316A             24         acall instructiuni
+001E 51CA             25         acall delay_timer
+                      26     
+0020 740C             27         mov a, #0Ch ; Pornire LCD
+0022 316A             28         acall instructiuni
+0024 51CA             29         acall delay_timer
+                      30     
+0026 7401             31         mov a, #01h ; Stergere LCD
+0028 316A             32         acall instructiuni
+002A 51CA             33         acall delay_timer
+                      34     
+                      35         ; Afisare pe prima linie mesajul:"Temp. actuala"
+002C 7480             36         mov a, #80h ; pozitionare cursor pe prima linie la pozitia 0
+002E 316A             37         acall instructiuni
+0030 51CA             38         acall delay_timer
+                      39     
+0032 7454             40         mov a, #'T'
+0034 3177             41         acall date
+0036 51CA             42         acall delay_timer
+                      43     
+0038 7465             44         mov a, #'e'
+003A 3177             45         acall date
+003C 51CA             46         acall delay_timer
+                      47     
+003E 746D             48         mov a, #'m'
+0040 3177             49         acall date
+0042 51CA             50         acall delay_timer
+                      51     
+0044 7470             52         mov a, #'p'
+0046 3177             53         acall date
+0048 51CA             54         acall delay_timer
+                      55     
+004A 742E             56         mov a, #'.'
+004C 3177             57         acall date
+A51 MACRO ASSEMBLER  ASM                                                                  05/25/2024 19:41:20 PAGE     2
+
+004E 51CA             58         acall delay_timer
+                      59     
+0050 7461             60         mov a, #'a'
+0052 3177             61         acall date
+0054 51CA             62         acall delay_timer
+                      63     
+0056 7463             64         mov a, #'c'
+0058 3177             65         acall date
+005A 51CA             66         acall delay_timer
+                      67     
+005C 7474             68         mov a, #'t'
+005E 3177             69         acall date
+0060 51CA             70         acall delay_timer
+                      71     
+0062 7475             72         mov a, #'u'
+0064 3177             73         acall date
+0066 51CA             74         acall delay_timer
+                      75     
+0068 7461             76         mov a, #'a'
+006A 3177             77         acall date
+006C 51CA             78         acall delay_timer
+                      79         
+006E 746C             80         mov a, #'l'
+0070 3177             81         acall date
+0072 51CA             82         acall delay_timer
+                      83     
+0074 7461             84         mov a, #'a'
+0076 3177             85         acall date
+0078 51CA             86         acall delay_timer
+                      87     
+007A 743A             88         mov a, #':'
+007C 3177             89         acall date
+007E 51CA             90         acall delay_timer
+                      91     
+                      92         ; Afisare pe a doua linie mesajul:"Temp.setata"
+0080 74C0             93         mov a, #0C0h ; Pozitionare cursor pe linia a doua la pozitia 0
+0082 316A             94         acall instructiuni
+0084 51CA             95         acall delay_timer
+                      96     
+0086 7454             97         mov a, #'T'
+0088 3177             98         acall date
+008A 51CA             99         acall delay_timer
+                     100     
+008C 7465            101         mov a, #'e'
+008E 3177            102         acall date
+0090 51CA            103         acall delay_timer
+                     104     
+0092 746D            105         mov a, #'m'
+0094 3177            106         acall date
+0096 51CA            107         acall delay_timer
+                     108     
+0098 7470            109         mov a, #'p'
+009A 3177            110         acall date
+009C 51CA            111         acall delay_timer
+                     112     
+009E 742E            113         mov a, #'.'
+00A0 3177            114         acall date
+00A2 51CA            115         acall delay_timer
+                     116     
+00A4 7473            117         mov a, #'s'
+00A6 3177            118         acall date
+00A8 51CA            119         acall delay_timer
+                     120     
+00AA 7465            121         mov a, #'e'
+00AC 3177            122         acall date
+00AE 51CA            123         acall delay_timer
+A51 MACRO ASSEMBLER  ASM                                                                  05/25/2024 19:41:20 PAGE     3
+
+                     124     
+00B0 7474            125         mov a, #'t'
+00B2 3177            126         acall date
+00B4 51CA            127         acall delay_timer
+                     128     
+00B6 7461            129         mov a, #'a'
+00B8 3177            130         acall date
+00BA 51CA            131         acall delay_timer
+                     132     
+00BC 7474            133         mov a, #'t'
+00BE 3177            134         acall date
+00C0 51CA            135         acall delay_timer
+                     136     
+00C2 7461            137         mov a, #'a'
+00C4 3177            138         acall date
+00C6 51CA            139         acall delay_timer
+                     140     
+00C8 743A            141         mov a, #':'
+00CA 3177            142         acall date
+00CC 51CA            143         acall delay_timer
+                     144         
+00CE 7490            145         mov a, #90h ; Pozitionare cursor pe linia a doua la pozitia 0
+00D0 316A            146         acall instructiuni
+00D2 51CA            147         acall delay_timer
+                     148     
+00D4 7455            149         mov a, #'U'
+00D6 3177            150         acall date
+00D8 51CA            151         acall delay_timer
+                     152     
+00DA 746D            153         mov a, #'m'
+00DC 3177            154         acall date
+00DE 51CA            155         acall delay_timer
+                     156     
+00E0 7469            157         mov a, #'i'
+00E2 3177            158         acall date
+00E4 51CA            159         acall delay_timer
+                     160     
+00E6 7464            161         mov a, #'d'
+00E8 3177            162         acall date
+00EA 51CA            163         acall delay_timer
+                     164     
+00EC 7469            165         mov a, #'i'
+00EE 3177            166         acall date
+00F0 51CA            167         acall delay_timer
+                     168     
+00F2 7474            169         mov a, #'t'
+00F4 3177            170         acall date
+00F6 51CA            171         acall delay_timer
+                     172     
+00F8 7461            173         mov a, #'a'
+00FA 3177            174         acall date
+00FC 51CA            175         acall delay_timer
+                     176     
+00FE 7474            177         mov a, #'t'
+0100 3177            178         acall date
+0102 51CA            179         acall delay_timer
+                     180     
+0104 7465            181         mov a, #'e'
+0106 3177            182         acall date
+0108 51CA            183         acall delay_timer
+                     184     
+010A 7461            185         mov a, #'a'
+010C 3177            186         acall date
+010E 51CA            187         acall delay_timer
+                     188     
+0110 743A            189         mov a, #':'
+A51 MACRO ASSEMBLER  ASM                                                                  05/25/2024 19:41:20 PAGE     4
+
+0112 3177            190         acall date
+0114 51CA            191         acall delay_timer
+                     192         
+0116 74D0            193         mov a, #0D0h ; Pozitionare cursor pe linia a doua la pozitia 0
+0118 316A            194         acall instructiuni
+011A 51CA            195         acall delay_timer
+                     196     
+011C 7443            197         mov a, #'C'
+011E 3177            198         acall date
+0120 51CA            199         acall delay_timer
+                     200     
+0122 7461            201         mov a, #'a'
+0124 3177            202         acall date
+0126 51CA            203         acall delay_timer
+                     204     
+0128 7472            205         mov a, #'r'
+012A 3177            206         acall date
+012C 51CA            207         acall delay_timer
+                     208     
+012E 7461            209         mov a, #'a'
+0130 3177            210         acall date
+0132 51CA            211         acall delay_timer
+                     212     
+0134 7463            213         mov a, #'c'
+0136 3177            214         acall date
+0138 51CA            215         acall delay_timer
+                     216     
+013A 7474            217         mov a, #'t'
+013C 3177            218         acall date
+013E 51CA            219         acall delay_timer
+                     220     
+0140 742E            221         mov a, #'.'
+0142 3177            222         acall date
+0144 51CA            223         acall delay_timer
+                     224     
+0146 7473            225         mov a, #'s'
+0148 3177            226         acall date
+014A 51CA            227         acall delay_timer
+                     228     
+014C 7470            229         mov a, #'p'
+014E 3177            230         acall date
+0150 51CA            231         acall delay_timer
+                     232     
+0152 7465            233         mov a, #'e'
+0154 3177            234         acall date
+0156 51CA            235         acall delay_timer
+                     236     
+0158 7463            237         mov a, #'c'
+015A 3177            238         acall date
+015C 51CA            239         acall delay_timer
+                     240         
+015E 742E            241         mov a, #'.'
+0160 3177            242         acall date
+0162 51CA            243         acall delay_timer
+                     244     
+0164 743A            245         mov a, #':'
+0166 3177            246         acall date
+0168 51CA            247         acall delay_timer
+                     248     
+                     249     
+016A                 250     instructiuni: ; Trimite instructiuni la LCD
+016A F5A0            251         mov P2, a
+016C C2B0            252         clr P3.0 ; RS=0 pentru instructiuni
+016E C2B1            253         clr P3.1 ; R/W=0 pentru scriere
+0170 D2B2            254         setb P3.2 ; E=1 se activeaza pinul E
+0172 51CA            255         acall delay_timer
+A51 MACRO ASSEMBLER  ASM                                                                  05/25/2024 19:41:20 PAGE     5
+
+0174 C2B2            256         clr P3.2 ; E=0 se dezactiveaza pinul E
+0176 22              257         ret
+                     258     
+0177                 259     date: ; Scrie date pe LCD
+0177 F5A0            260         mov P2, a
+0179 D2B0            261         setb P3.0 ; RS=1 pentru date
+017B C2B1            262         clr P3.1 ; R/W=0 pentru scriere
+017D D2B2            263         setb P3.2 ; E=1 se activeaza pinul E
+                     264     
+017F 51CA            265         acall delay_timer
+0181 C2B2            266         clr P3.2 ; E=0 se dezactiveaza pinul E
+0183 22              267         ret
+                     268     
+0184                 269     ADC:
+0184 748D            270         mov a, #8Dh ; Pozitionare cursor pe prima linie pozitia 13
+0186 316A            271         acall instructiuni
+0188 51CA            272         acall delay_timer
+018A A990            273         mov r1, P1
+                     274         ; Afisare temperatura setata
+018C E9              275         mov a, r1
+018D 75F006          276         mov b, #6h ; 5/2^8
+0190 84              277         div ab
+0191 75F00A          278         mov b, #0Ah
+0194 84              279         div ab
+0195 C0F0            280         push b
+0197 2430            281         add a, #30H
+0199 3177            282         acall date
+019B 51CA            283         acall delay_timer
+019D D0F0            284         pop b
+019F E5F0            285         mov a, b
+01A1 2430            286         add a, #30h
+01A3 3177            287         acall date
+01A5 51CA            288         acall delay_timer
+                     289     
+                     290     ; Afisare temperatura actuala
+01A7 74DF            291         mov a, #0DFh ; simbolul de la grade
+01A9 3177            292         acall date
+01AB 51CA            293         acall delay_timer
+                     294         
+01AD 74CD            295         mov a, #0CDh ; Pozitionare cursor pe a doua linie pozitia 13
+01AF 316A            296         acall instructiuni
+01B1 51CA            297         acall delay_timer
+                     298         
+01B3 E8              299         mov a, R0
+01B4 75F00A          300         mov b, #0Ah
+01B7 84              301         div ab
+01B8 C0F0            302         push b
+01BA 2430            303         add a, #30h
+01BC 3177            304         acall date
+01BE 51CA            305         acall delay_timer
+01C0 D0F0            306         pop b
+01C2 E5F0            307         mov a, b
+01C4 2430            308         add a, #30h
+01C6 3177            309         acall date
+01C8 51CA            310         acall delay_timer
+                     311         
+01CA 74DF            312         mov a, #0DFh
+01CC 3177            313         acall date
+01CE 51CA            314         acall delay_timer
+                     315             
+01D0                 316     display_humidity:
+                     317         ; Calculeaza umiditatea in functie de temperatura actuala
+01D0 E590            318         mov a, P1 ; Citeste temperatura actuala
+01D2 75F00A          319         mov b, #0Ah
+01D5 95F0            320         subb a, b
+01D7 4008            321         jc calc_high_humidity
+A51 MACRO ASSEMBLER  ASM                                                                  05/25/2024 19:41:20 PAGE     6
+
+                     322         
+01D9 E590            323         mov a, P1
+01DB 940A            324         subb a, #0Ah
+01DD 2432            325         add a, #32h
+01DF 8008            326         sjmp finish_humidity
+                     327     
+01E1                 328     calc_high_humidity:
+01E1 7432            329         mov a, #32h
+01E3 9590            330         subb a, P1
+01E5 2450            331         add a, #50h
+01E7 8000            332         sjmp finish_humidity
+                     333     
+01E9                 334     finish_humidity:
+                     335         ; Converteste valoarea umiditatii in zeci si unitati
+01E9 75F00A          336         mov b, #0Ah
+01EC 84              337         div ab
+01ED FE              338         mov r6, a ; Salveaza zecile
+01EE AFF0            339         mov r7, b ; Salveaza unitatile
+                     340     
+                     341         ; Pozitionare cursor pe a treia linie la pozitia 13
+01F0 749D            342         mov a, #9Dh
+01F2 316A            343         acall instructiuni
+01F4 51CA            344         acall delay_timer
+                     345     
+                     346         ; Afisare zeci
+01F6 EE              347         mov a, r6
+01F7 2430            348         add a, #30h
+01F9 3177            349         acall date
+01FB 51CA            350         acall delay_timer
+                     351     
+                     352         ; Afisare unitati
+01FD EF              353         mov a, r7
+01FE 2430            354         add a, #30h
+0200 3177            355         acall date
+0202 51CA            356         acall delay_timer
+                     357     
+                     358         ; Afisare simbol procent
+0204 7425            359         mov a, #25h
+0206 3177            360         acall date
+0208 51CA            361         acall delay_timer
+020A 22              362         ret
+                     363     
+                     364         
+020B                 365     HEART:
+020B 7440            366         MOV A, #40H
+020D 316A            367         ACALL instructiuni
+020F 7400            368         MOV A, #00H
+0211 3177            369         ACALL date
+0213 740A            370         MOV A, #0AH
+0215 3177            371         ACALL date
+0217 741F            372         MOV A, #1FH
+0219 3177            373         ACALL date
+021B 741F            374         MOV A, #1FH
+021D 3177            375         ACALL date
+021F 740E            376         MOV A, #0EH
+0221 3177            377         ACALL date
+0223 7404            378         MOV A, #04H
+0225 3177            379         ACALL date
+0227 7400            380         MOV A, #00H
+0229 3177            381         ACALL date
+022B 7400            382         MOV A, #00H
+022D 3177            383         ACALL date
+                     384     
+022F 74DD            385         MOV A, #0DDH ; Set cursor position for heart character (C8H)
+0231 316A            386         ACALL instructiuni
+0233 7400            387         MOV A, #00H ; Display heart character
+A51 MACRO ASSEMBLER  ASM                                                                  05/25/2024 19:41:20 PAGE     7
+
+0235 3177            388         ACALL date
+0237 51CA            389         ACALL delay_timer
+                     390         
+                     391     
+0239                 392     CARACTER:
+0239 7448            393         MOV A, #48H
+023B 316A            394         ACALL instructiuni
+023D 7400            395         MOV A, #00H
+023F 3177            396         ACALL date
+0241 740A            397         MOV A, #0AH
+0243 3177            398         ACALL date
+0245 740A            399         MOV A, #0AH
+0247 3177            400         ACALL date
+0249 740A            401         MOV A, #0AH
+024B 3177            402         ACALL date
+024D 7411            403         MOV A, #11H
+024F 3177            404         ACALL date
+0251 740E            405         MOV A, #0EH
+0253 3177            406         ACALL date
+0255 7400            407         MOV A, #00H
+0257 3177            408         ACALL date
+0259 7400            409         MOV A, #00H
+025B 3177            410         ACALL date
+                     411     
+025D 74DE            412         MOV A, #0DEH ; Set cursor position for custom character (CAH)
+025F 316A            413         ACALL instructiuni
+0261 7401            414         MOV A, #01H ; Display custom character
+0263 3177            415         ACALL date
+0265 51CA            416         ACALL delay_timer
+                     417     
+0267                 418     OMULET:
+0267 7450            419         MOV A, #50H
+0269 316A            420         ACALL instructiuni
+026B 740E            421         MOV A, #0EH
+026D 3177            422         ACALL date
+026F 740E            423         MOV A, #0EH
+0271 3177            424         ACALL date
+0273 740E            425         MOV A, #0EH
+0275 3177            426         ACALL date
+0277 7404            427         MOV A, #04H
+0279 3177            428         ACALL date
+027B 741F            429         MOV A, #1FH
+027D 3177            430         ACALL date
+027F 7404            431         MOV A, #04H
+0281 3177            432         ACALL date
+0283 741F            433         MOV A, #1FH
+0285 3177            434         ACALL date
+0287 7411            435         MOV A, #11H
+0289 3177            436         ACALL date
+                     437     
+028B 74DF            438         MOV A, #0DFH ; Set cursor position for custom character (CAH)
+028D 316A            439         ACALL instructiuni
+028F 7402            440         MOV A, #02H ; Display custom character
+0291 3177            441         ACALL date
+0293 51CA            442         ACALL delay_timer
+0295 22              443         RET
+                     444     ; Control releu
+0296 E590            445         mov a, P1 ;Valoarea actuala
+0298 AE80            446         mov R6, P0 ;Valoarea setata
+029A 9E              447         subb a, R6
+029B 4002            448         jc start ; Se verifica daca temperatura setata este mai mare decat cea actuala
+029D 8004            449         sjmp oprire
+029F                 450     start:
+029F C2B7            451         clr P3.7 ; Pornire releu
+02A1 8037            452         sjmp gata
+                     453     
+A51 MACRO ASSEMBLER  ASM                                                                  05/25/2024 19:41:20 PAGE     8
+
+02A3                 454     oprire:
+02A3 D2B7            455         setb P3.7 ;Oprire releu
+                     456      
+                     457     ; Tastatura
+02A5 308006          458         jnb P0.0, Buton1 ; Se verifica daca "+" este apasat
+02A8 308111          459         jnb P0.1, Buton2 ; Se verifica daca "-" este apasat
+02AB 020184          460         ljmp ADC
+02AE                 461     Buton1:
+02AE 7BFF            462         mov r3, #255
+02B0                 463     debouncing_1:
+02B0 2080FB          464         jb P0.0, Buton1
+02B3 DBFB            465         djnz r3, debouncing_1
+02B5 08              466         inc R0
+02B6                 467     b1:
+02B6 3080FD          468         jnb P0.0, b1
+02B9 020184          469         ljmp ADC
+                     470     
+02BC                 471     Buton2:
+02BC 7BFF            472         mov r3, #255
+02BE                 473     debouncing_2:
+02BE 2081FB          474         jb P0.1, Buton2
+02C1 DBFB            475         djnz r3, debouncing_2
+02C3 18              476         dec R0
+02C4                 477     b2:
+02C4 3081FD          478         jnb P0.1, b2
+02C7 020184          479         ljmp ADC
+                     480     
+                     481     ; Functie de intarziere folosind Timer 1
+02CA                 482     delay_timer:
+02CA 758DEE          483         mov TH1, #0EEh ; Incarca TH1 pentru un overflow de 5ms (presupunand un cristal de 12MHz)
+02CD 758B00          484         mov TL1, #00h ; Incarca TL1 pentru un overflow de 5ms (presupunand un cristal de 12MHz)
+02D0 D28E            485         setb TR1 ; Porneste Timer 1
+02D2                 486     d1:
+02D2 308FFD          487         jnb TF1, d1 ; Asteapta overflow
+02D5 C28F            488         clr TF1 ; Opreste Timer 1
+02D7 C28E            489         clr TR1 ; Reseteaza flag-ul Timer 1
+02D9 22              490         ret
+02DA                 491     gata:
+                     492     end
+A51 MACRO ASSEMBLER  ASM                                                                  05/25/2024 19:41:20 PAGE     9
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ADC. . . . . . . .  C ADDR   0184H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+B1 . . . . . . . .  C ADDR   02B6H   A   
+B2 . . . . . . . .  C ADDR   02C4H   A   
+BUTON1 . . . . . .  C ADDR   02AEH   A   
+BUTON2 . . . . . .  C ADDR   02BCH   A   
+CALC_HIGH_HUMIDITY  C ADDR   01E1H   A   
+CARACTER . . . . .  C ADDR   0239H   A   
+D1 . . . . . . . .  C ADDR   02D2H   A   
+DATE . . . . . . .  C ADDR   0177H   A   
+DEBOUNCING_1 . . .  C ADDR   02B0H   A   
+DEBOUNCING_2 . . .  C ADDR   02BEH   A   
+DELAY_TIMER. . . .  C ADDR   02CAH   A   
+DISPLAY_HUMIDITY .  C ADDR   01D0H   A   
+FINISH_HUMIDITY. .  C ADDR   01E9H   A   
+GATA . . . . . . .  C ADDR   02DAH   A   
+HEART. . . . . . .  C ADDR   020BH   A   
+INIT_TIMER . . . .  C ADDR   0016H   A   
+INSTRUCTIUNI . . .  C ADDR   016AH   A   
+LCD. . . . . . . .  C ADDR   001AH   A   
+OMULET . . . . . .  C ADDR   0267H   A   
+OPRIRE . . . . . .  C ADDR   02A3H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+START. . . . . . .  C ADDR   029FH   A   
+TF1. . . . . . . .  B ADDR   0088H.7 A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

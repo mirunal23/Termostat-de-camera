@@ -1,0 +1,116 @@
+A51 MACRO ASSEMBLER  LCD                                                                  05/18/2024 22:32:56 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\lcd.obj
+ASSEMBLER INVOKED BY: C:\Program Files\C51\BIN\A51.EXE lcd.a51 SET(SMALL) DEBUG PRINT(.\Listings\lcd.lst) OBJECT(.\Objec
+                      ts\lcd.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     NAME LCD_
+                       2     
+                       3     PUBLIC _init_lcd, _display_initial_message, _update_display
+                       4     EXTRN CODE (_send_instruction, _send_data)
+                       5     EXTRN CODE (_delay_ms)
+                       6     
+                       7     RutinaLCD Segment Code
+----                   8     Rseg RutinaLCD
+                       9     
+0000                  10     _init_lcd:
+0000 7438             11         MOV A, #38h
+0002 1100     F       12         ACALL _send_instruction
+0004 1100     F       13         ACALL _delay_ms
+                      14     
+0006 740E             15         MOV A, #0Eh
+0008 1100     F       16         ACALL _send_instruction
+000A 1100     F       17         ACALL _delay_ms
+                      18     
+000C 7401             19         MOV A, #01h
+000E 1100     F       20         ACALL _send_instruction
+0010 1100     F       21         ACALL _delay_ms
+0012 22               22         RET
+                      23     
+0013                  24     _display_initial_message:
+0013 7480             25         MOV A, #80h ; Pozitionare cursor la începutul primei linii
+0015 1100     F       26         ACALL _send_instruction
+0017 1100     F       27         ACALL _delay_ms
+                      28     
+0019 7454             29         MOV A, #'T'
+001B 1100     F       30         ACALL _send_data
+001D 1100     F       31         ACALL _delay_ms
+                      32         ; Continua sa scrii restul mesajului "Temp. actuala:"
+001F 7465             33         MOV A, #'e'
+0021 1100     F       34         ACALL _send_data
+0023 1100     F       35         ACALL _delay_ms
+                      36         ; (Completeaza cu restul caracterelor)
+                      37         
+0025 74C0             38         MOV A, #0C0h ; Pozitionare cursor la începutul celei de-a doua linii
+0027 1100     F       39         ACALL _send_instruction
+0029 1100     F       40         ACALL _delay_ms
+                      41     
+002B 7454             42         MOV A, #'T'
+002D 1100     F       43         ACALL _send_data
+002F 1100     F       44         ACALL _delay_ms
+                      45         ; Continua sa scrii restul mesajului "Temp. setata:"
+0031 7465             46         MOV A, #'e'
+0033 1100     F       47         ACALL _send_data
+0035 1100     F       48         ACALL _delay_ms
+                      49         ; (Completeaza cu restul caracterelor)
+0037 22               50         RET
+                      51     
+0038                  52     _update_display:
+                      53         ; Actualizare afi?aj cu temperaturile setata ?i actuala
+0038 748E             54         MOV A, #8Eh ; Pozitionare cursor pe prima linie la pozitia 14
+003A 1100     F       55         ACALL _send_instruction
+003C 1100     F       56         ACALL _delay_ms
+                      57     
+A51 MACRO ASSEMBLER  LCD                                                                  05/18/2024 22:32:56 PAGE     2
+
+                      58       ;  MOV A, _temperature_set
+003E 75F00A           59         MOV B, #10
+0041 84               60         DIV AB
+0042 2430             61         ADD A, #30h
+0044 1100     F       62         ACALL _send_data
+0046 E5F0             63         MOV A, B
+0048 2430             64         ADD A, #30h
+004A 1100     F       65         ACALL _send_data
+                      66     
+004C 74CE             67         MOV A, #0CEh ; Pozitionare cursor pe a doua linie la pozitia 14
+004E 1100     F       68         ACALL _send_instruction
+0050 1100     F       69         ACALL _delay_ms
+                      70     
+0052 E590             71         MOV A, P1 ; Exemplu pentru temperatura actuala
+0054 75F00A           72         MOV B, #10
+0057 84               73         DIV AB
+0058 2430             74         ADD A, #30h
+005A 1100     F       75         ACALL _send_data
+005C E5F0             76         MOV A, B
+005E 2430             77         ADD A, #30h
+0060 1100     F       78         ACALL _send_data
+0062 22               79         RET
+                      80     end
+A51 MACRO ASSEMBLER  LCD                                                                  05/18/2024 22:32:56 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E                   T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . . . . .  D ADDR   00F0H   A   
+LCD_ . . . . . . . . . .  N NUMB   -----       
+P1 . . . . . . . . . . .  D ADDR   0090H   A   
+RUTINALCD. . . . . . . .  C SEG    0063H       REL=UNIT
+_DELAY_MS. . . . . . . .  C ADDR   -----       EXT
+_DISPLAY_INITIAL_MESSAGE  C ADDR   0013H   R   SEG=RUTINALCD
+_INIT_LCD. . . . . . . .  C ADDR   0000H   R   SEG=RUTINALCD
+_SEND_DATA . . . . . . .  C ADDR   -----       EXT
+_SEND_INSTRUCTION. . . .  C ADDR   -----       EXT
+_UPDATE_DISPLAY. . . . .  C ADDR   0038H   R   SEG=RUTINALCD
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

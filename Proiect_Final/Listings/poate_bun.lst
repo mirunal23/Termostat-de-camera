@@ -1,0 +1,305 @@
+A51 MACRO ASSEMBLER  POATE_BUN                                                            05/19/2024 13:56:06 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\poate_bun.obj
+ASSEMBLER INVOKED BY: C:\Program Files\C51\BIN\A51.EXE poate_bun.a51 SET(SMALL) DEBUG PRINT(.\Listings\poate_bun.lst) OB
+                      JECT(.\Objects\poate_bun.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  00B4                 1     eoc bit P3.4
+  00B3                 2     sc bit P3.3
+  00B5                 3     ale bit P3.5
+  00B6                 4     oe bit P3.6
+                       5     
+0000                   6     org 0000h
+0000 7D12              7     mov r5,#18 ;tensiunea de referinta din incapere
+0002 D280              8     setb P0.0 ;setez butoanele initial ca fiind neapasate
+0004 D282              9     setb P0.2
+0006 110A             10     acall LCD
+0008 11C8             11     acall ADC
+000A                  12     LCD:
+000A 7438             13     mov a,#38h ; Afisare caractere pe o matrice de 5x7
+000C 11A9             14     acall command_lcd
+000E 11C3             15     acall delay
+0010 740E             16     mov a,#0Eh ; pornire LCD
+0012 11A9             17     acall command_lcd
+0014 11C3             18     acall delay
+0016 7401             19     mov a,#01h; stergere LCD
+0018 11A9             20     acall command_lcd
+001A 11C3             21     acall delay
+001C 11C3             22     acall delay
+001E 7480             23     mov a,#80h ; pozitionare cursor pe prima linie la pozitia 0
+0020 11A9             24     acall command_lcd
+0022 11C3             25     acall delay
+                      26     
+0024 7454             27     mov a,#'T'
+0026 11B6             28     acall write
+0028 11C3             29     acall delay
+                      30     
+002A 7465             31     mov a,#'e'
+002C 11B6             32     acall write            
+002E 11C3             33     acall delay
+                      34     
+0030 746D             35     mov a,#'m'
+0032 11B6             36     acall write
+0034 11C3             37     acall delay
+                      38     
+0036 7470             39     mov a,#'p'
+0038 11B6             40     acall write
+003A 11C3             41     acall delay
+                      42     
+003C 7420             43     mov a,#' '
+003E 11B6             44     acall write
+0040 11C3             45     acall delay
+                      46     
+0042 7473             47     mov a,#'s'
+0044 11B6             48     acall write
+0046 11C3             49     acall delay
+                      50     
+0048 7465             51     mov a,#'e'
+004A 11B6             52     acall write
+004C 11C3             53     acall delay
+                      54     
+004E 746E             55     mov a,#'n'
+0050 11B6             56     acall write
+0052 11C3             57     acall delay
+A51 MACRO ASSEMBLER  POATE_BUN                                                            05/19/2024 13:56:06 PAGE     2
+
+                      58     
+0054 747A             59     mov a,#'z'
+0056 11B6             60     acall write
+0058 11C3             61     acall delay
+                      62     
+005A 746F             63     mov a,#'o'
+005C 11B6             64     acall write
+005E 11C3             65     acall delay
+                      66     
+0060 7472             67     mov a,#'r'
+0062 11B6             68     acall write
+0064 11C3             69     acall delay
+                      70     
+0066 743A             71     mov a,#':'
+0068 11B6             72     acall write
+006A 11C3             73     acall delay
+                      74     
+006C 74C0             75     mov a,#0C0h              ;Activeaza a 2-a linie
+006E 11A9             76     acall command_lcd
+0070 11C3             77     acall delay
+                      78     
+0072 7454             79     mov a,#'T'
+0074 11B6             80     acall write
+0076 11C3             81     acall delay
+                      82     
+0078 7465             83     mov a,#'e'
+007A 11B6             84     acall write
+007C 11C3             85     acall delay
+                      86     
+007E 746D             87     mov a,#'m'
+0080 11B6             88     acall write
+0082 11C3             89     acall delay
+                      90     
+0084 7470             91     mov a,#'p'
+0086 11B6             92     acall write
+0088 11C3             93     acall delay
+                      94     
+008A 7420             95     mov a,#' '
+008C 11B6             96     acall write
+008E 11C3             97     acall delay
+                      98     
+0090 7472             99     mov a,#'r'
+0092 11B6            100     acall write
+0094 11C3            101     acall delay
+                     102     
+0096 7465            103     mov a,#'e'
+0098 11B6            104     acall write
+009A 11C3            105     acall delay
+                     106     
+009C 7466            107     mov a,#'f'
+009E 11B6            108     acall write
+00A0 11C3            109     acall delay
+                     110     
+00A2 743A            111     mov a,#':'
+00A4 11B6            112     acall write
+00A6 11C3            113     acall delay
+                     114     
+00A8 22              115     ret
+                     116     
+00A9                 117     command_lcd:            ;Trimite date la LCD
+00A9 F5A0            118     mov P2,a                  ;Copiaza reg A in P2
+00AB C2B0            119     clr P3.0                  ;RS=0 pentru comanda 
+00AD C2B1            120     clr P3.1                  ;R/W=0 pentru scriere
+00AF D2B2            121     setb P3.2                 ;E=1 se activeaza pinul E
+00B1 11C3            122     acall delay
+00B3 C2B2            123     clr P3.2                  ;E=0 se dezactiveaza pinul E
+A51 MACRO ASSEMBLER  POATE_BUN                                                            05/19/2024 13:56:06 PAGE     3
+
+00B5 22              124     ret
+                     125     
+00B6                 126     write:               ;Scrie date la LCD
+00B6 F5A0            127     mov P2,a                  ;Copiaza reg A in P2
+00B8 D2B0            128     setb P3.0                 ;RS=1 pentru date
+00BA C2B1            129     clr P3.1                  ;R/W=0 pentru scriere
+00BC D2B2            130     setb P3.2                 ;E=1 se activeaza pinul E
+00BE 11C3            131     acall delay
+00C0 C2B2            132     clr P3.2                  ;E=0 se dezactiveaza pinul E
+00C2 22              133     ret
+                     134     
+00C3                 135     delay:
+00C3 7CFF            136     mov R4,#255
+00C5                 137     CICLE:
+00C5 DCFE            138     djnz R4,CICLE             ;Asteptam pana R4 devine 0
+00C7 22              139     ret
+                     140     
+00C8                 141     ADC:
+00C8 8000            142     sjmp main
+  0090               143     adc_data equ P1 ; iesirea convertorului este pe portul 1        
+00CA                 144     main:
+00CA 7590FF          145     mov adc_data,#0FFh ; portul 1->port de intrare
+00CD 11D1            146     acall command_adc
+00CF F580            147     mov P0,a
+00D1                 148     command_adc:
+00D1 D2B4            149     setb eoc ;EOC=1
+00D3 C2B5            150     clr ale ;ALE=0  
+00D5 C2B3            151     clr sc ;Start=0
+00D7 C2B6            152     clr oe ;OE=0
+00D9 3169            153     acall delay_1
+00DB                 154     repeat:
+00DB D2B5            155     setb ale ;ALE=1
+00DD 3169            156     acall delay_1
+00DF D2B3            157     setb sc ;SC=1
+00E1 3169            158     acall delay_1
+00E3 C2B5            159     clr ale
+00E5 C2B3            160     clr sc
+                     161     
+00E7                 162     et: 
+00E7 20B4FD          163     jb eoc,et ;asteptam sfarsitul conversiei
+00EA                 164     back:
+00EA 30B4FD          165     jnb eoc,back ;monitorizam eoc pana devine 1
+00ED D2B6            166     setb oe
+00EF 3169            167     acall delay_1
+                     168     
+00F1 748E            169     mov a,#8Eh ;pozitionare cursor pe prima linie pozitia 14
+00F3 11A9            170     acall command_lcd
+00F5 11C3            171     acall delay
+                     172     
+00F7 A990            173     mov r1,P1
+00F9 C2B6            174     clr oe
+                     175     
+00FB E9              176     mov a,r1
+00FC 75F00A          177     mov b,#0ah
+00FF 84              178     div ab
+0100 C0F0            179     push b
+0102 2430            180     add a,#30h
+0104 11B6            181     acall write
+0106 11C3            182     acall delay
+0108 7400            183     mov a,#0h
+010A D0F0            184     pop b
+010C E5F0            185     mov a,b
+010E 2430            186     add a,#30h
+0110 11B6            187     acall write 
+0112 11C3            188     acall delay
+                     189     
+A51 MACRO ASSEMBLER  POATE_BUN                                                            05/19/2024 13:56:06 PAGE     4
+
+0114 74CE            190     mov a,#0CEh ; pozitionare cursor pe a doua linie pozitia 14
+0116 11A9            191     acall command_lcd
+0118 11C3            192     acall delay
+                     193     
+011A ED              194     mov a,r5
+011B 75F00A          195     mov b,#0ah
+011E 84              196     div ab
+011F C0F0            197     push b
+0121 2430            198     add a,#30h
+0123 11B6            199     acall write
+0125 11C3            200     acall delay
+0127 D0F0            201     pop b
+0129 E5F0            202     mov a,b
+012B 2430            203     add a,#30h
+012D 11B6            204     acall write
+012F 11C3            205     acall delay
+                     206     
+0131                 207     butoane:  ;verificare daca ambele butoane sunt apasate
+0131 308005          208     jnb P0.0,b1 ;se verifica daca primul buton este apasat
+0134 30820F          209     jnb P0.2,b2 ;se verifica daca cel de-al doilea buton este apasat
+0137 80A2            210     sjmp repeat
+                     211     
+0139                 212     b1:  ;butonul pt cresterea tensiunii de referinta
+0139 7BFF            213     mov r3,#255  
+013B 2080FB          214     debouncing_1: jb P0.0,b1 
+013E DBFB            215     djnz r3,debouncing_1
+0140 0D              216     inc r5
+0141 3080FD          217     b1_2:jnb P0.0,b1_2
+0144 8095            218     sjmp repeat
+                     219     
+0146                 220     b2:  ;butonul pt micsorarea tensiunii de referinta
+0146 7BFF            221     mov r3,#255 
+0148 2082FB          222     debouncing_2:jb P0.2,b2
+014B DBFB            223     djnz r3,debouncing_2
+014D 1D              224     dec r5
+014E 3082FD          225     b2_2:jnb P0.2,b2_2
+                     226     
+0151 E9              227     mov a,r1 ; mutam in acumulator valoarea temperaturii din incapere
+0152 8D35            228     mov 35h,r5 ;la adresa 35h mutam valoarea temperaturii setate
+0154 B53504          229     cjne a,35h,diferit ;se compara cele doua temperaturi 
+0157 C2B7            230     clr P3.7 
+0159 800A            231     sjmp et_2
+015B 4006            232     diferit:jc et_3 ;daca temp de ref > temp din incapere se sare la eticheta
+015D 5000            233     jnc et_4
+015F D2B7            234     et_4:setb P3.7
+0161 8002            235     sjmp et_2
+0163 C2B7            236     et_3:clr P3.7
+0165 0200DB          237     et_2:ljmp repeat
+0168 22              238     ret
+0169                 239     delay_1:
+0169 00              240     nop
+016A 22              241     ret
+                     242     end
+A51 MACRO ASSEMBLER  POATE_BUN                                                            05/19/2024 13:56:06 PAGE     5
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ADC. . . . . . . .  C ADDR   00C8H   A   
+ADC_DATA . . . . .  D ADDR   0090H   A   
+ALE. . . . . . . .  B ADDR   00B0H.5 A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+B1 . . . . . . . .  C ADDR   0139H   A   
+B1_2 . . . . . . .  C ADDR   0141H   A   
+B2 . . . . . . . .  C ADDR   0146H   A   
+B2_2 . . . . . . .  C ADDR   014EH   A   
+BACK . . . . . . .  C ADDR   00EAH   A   
+BUTOANE. . . . . .  C ADDR   0131H   A   
+CICLE. . . . . . .  C ADDR   00C5H   A   
+COMMAND_ADC. . . .  C ADDR   00D1H   A   
+COMMAND_LCD. . . .  C ADDR   00A9H   A   
+DEBOUNCING_1 . . .  C ADDR   013BH   A   
+DEBOUNCING_2 . . .  C ADDR   0148H   A   
+DELAY. . . . . . .  C ADDR   00C3H   A   
+DELAY_1. . . . . .  C ADDR   0169H   A   
+DIFERIT. . . . . .  C ADDR   015BH   A   
+EOC. . . . . . . .  B ADDR   00B0H.4 A   
+ET . . . . . . . .  C ADDR   00E7H   A   
+ET_2 . . . . . . .  C ADDR   0165H   A   
+ET_3 . . . . . . .  C ADDR   0163H   A   
+ET_4 . . . . . . .  C ADDR   015FH   A   
+LCD. . . . . . . .  C ADDR   000AH   A   
+MAIN . . . . . . .  C ADDR   00CAH   A   
+OE . . . . . . . .  B ADDR   00B0H.6 A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+REPEAT . . . . . .  C ADDR   00DBH   A   
+SC . . . . . . . .  B ADDR   00B0H.3 A   
+WRITE. . . . . . .  C ADDR   00B6H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

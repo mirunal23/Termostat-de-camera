@@ -1,0 +1,79 @@
+A51 MACRO ASSEMBLER  MODULARPROGRAMING                                                    05/18/2024 22:33:11 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\main.obj
+ASSEMBLER INVOKED BY: C:\Program Files\C51\BIN\A51.EXE main.a51 SET(SMALL) DEBUG PRINT(.\Listings\main.lst) OBJECT(.\Obj
+                      ects\main.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     $title (ModularPrograming)
+                       2     MainP SEGMENT CODE
+                       3     
+                       4     EXTRN CODE (_init_lcd, _display_initial_message, _update_display)
+                       5     EXTRN CODE (_init_timer, _delay_ms)
+                       6     EXTRN CODE (_control_relay, _check_buttons)
+                       7     
+                       8     ; Definirea pinilor pentru butoane ?i releu
+  0080                 9     BUTTON_PLUS   EQU P0.0
+  0081                10     BUTTON_MINUS  EQU P0.1
+  0097                11     RELAY         EQU P1.7
+                      12     
+                      13     
+                      14     EXTRN DATA (_temperature_set)
+                      15     
+                      16     ; Variabile globale
+                      17     ;_temperature_set  DATA 30h
+                      18     
+----                  19     CSEG AT 0000h
+0000 8000             20         JMP START
+                      21     
+0002                  22     START:
+0002 750010   F       23         MOV _temperature_set, #16 ; Valoarea setata ini?iala
+                      24     
+0005 D280             25         SETB BUTTON_PLUS  ; Seteaza butoanele ca neapasate ini?ial
+0007 D281             26         SETB BUTTON_MINUS
+0009 C297             27         CLR RELAY         ; Releu ini?ial oprit
+                      28         
+000B 1100     F       29         ACALL _init_timer
+000D 1100     F       30         ACALL _init_lcd
+000F 1100     F       31         ACALL _display_initial_message
+                      32     
+0011                  33     MAIN_LOOP:
+0011 1100     F       34         ACALL _update_display
+0013 1100     F       35         ACALL _check_buttons
+0015 1100     F       36         ACALL _control_relay
+0017 80F8             37         SJMP MAIN_LOOP
+                      38     
+                      39         END
+A51 MACRO ASSEMBLER  MODULARPROGRAMING                                                    05/18/2024 22:33:11 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E                   T Y P E  V A L U E   ATTRIBUTES
+
+BUTTON_MINUS . . . . . .  B ADDR   0080H.1 A   
+BUTTON_PLUS. . . . . . .  B ADDR   0080H.0 A   
+MAINP. . . . . . . . . .  C SEG    0000H       REL=UNIT
+MAIN_LOOP. . . . . . . .  C ADDR   0011H   A   
+P0 . . . . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . . . . .  D ADDR   0090H   A   
+RELAY. . . . . . . . . .  B ADDR   0090H.7 A   
+START. . . . . . . . . .  C ADDR   0002H   A   
+_CHECK_BUTTONS . . . . .  C ADDR   -----       EXT
+_CONTROL_RELAY . . . . .  C ADDR   -----       EXT
+_DELAY_MS. . . . . . . .  C ADDR   -----       EXT
+_DISPLAY_INITIAL_MESSAGE  C ADDR   -----       EXT
+_INIT_LCD. . . . . . . .  C ADDR   -----       EXT
+_INIT_TIMER. . . . . . .  C ADDR   -----       EXT
+_TEMPERATURE_SET . . . .  D ADDR   -----       EXT
+_UPDATE_DISPLAY. . . . .  C ADDR   -----       EXT
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

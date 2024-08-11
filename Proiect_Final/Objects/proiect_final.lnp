@@ -1,0 +1,3 @@
+".\Objects\asm.obj" 
+TO ".\Objects\proiect_final" 
+PRINT(".\Listings\proiect_final.m51")

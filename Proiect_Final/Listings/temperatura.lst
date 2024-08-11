@@ -1,0 +1,25 @@
+A51 MACRO ASSEMBLER  TEMPERATURA                                                          05/18/2024 22:32:29 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\temperatura.obj
+ASSEMBLER INVOKED BY: C:\Program Files\C51\BIN\A51.EXE temperatura.a51 SET(SMALL) DEBUG PRINT(.\Listings\temperatura.lst
+                      ) OBJECT(.\Objects\temperatura.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+*** WARNING #A41 IN 0 (temperatura.a51, LINE 0): MISSING 'END' STATEMENT
+A51 MACRO ASSEMBLER  TEMPERATURA                                                          05/18/2024 22:32:29 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  1 WARNING(S), 0 ERROR(S)

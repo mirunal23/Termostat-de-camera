@@ -1,0 +1,92 @@
+A51 MACRO ASSEMBLER  CONTROL                                                              05/18/2024 22:32:29 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\control.obj
+ASSEMBLER INVOKED BY: C:\Program Files\C51\BIN\A51.EXE control.a51 SET(SMALL) DEBUG PRINT(.\Listings\control.lst) OBJECT
+                      (.\Objects\control.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     NAME CONTROL_
+                       2     
+                       3     PUBLIC _control_relay, _check_buttons
+                       4     EXTRN DATA (_temperature_set)
+                       5     EXTRN CODE (_delay_ms)
+                       6     
+                       7     RutinaControl Segment Code
+----                   8     Rseg RutinaControl
+                       9     
+0000                  10     _control_relay:
+0000 E590             11         MOV A, P1 ; Valoarea actuala
+0002 AE00     F       12         MOV R6, _temperature_set ; Valoarea setata
+0004 9E               13         SUBB A, R6
+0005 4002             14         JC START_RELAY ; Se verifica daca temperatura setata este mai mare decat cea actuala
+0007 8004             15         SJMP STOP_RELAY
+                      16     
+0009                  17     START_RELAY:
+0009 C297             18         CLR P1.7 ; Pornire releu
+000B 8002             19         SJMP DONE
+                      20     
+000D                  21     STOP_RELAY:
+000D D297             22         SETB P1.7 ; Oprire releu
+                      23     
+000F                  24     DONE:
+000F 22               25         RET
+                      26     
+0010                  27     _check_buttons:
+0010 308004           28         JNB P0.0, BUTTON_PLUS_PRESSED ; Se verifica daca "+" este apasat
+0013 30810E           29         JNB P0.1, BUTTON_MINUS_PRESSED ; Se verifica daca "-" este apasat
+0016 22               30         RET
+                      31     
+0017                  32     BUTTON_PLUS_PRESSED:
+0017 7BFF             33         MOV R3, #255
+0019                  34     DEBOUNCE_PLUS:
+0019 2080FB           35         JB P0.0, BUTTON_PLUS_PRESSED
+001C DBFB             36         DJNZ R3, DEBOUNCE_PLUS
+001E 0500     F       37         INC _temperature_set
+0020                  38     WAIT_RELEASE_PLUS:
+0020 3080FD           39         JNB P0.0, WAIT_RELEASE_PLUS
+0023 22               40         RET
+                      41     
+0024                  42     BUTTON_MINUS_PRESSED:
+0024 7BFF             43         MOV R3, #255
+0026                  44     DEBOUNCE_MINUS:
+0026 2081FB           45         JB P0.1, BUTTON_MINUS_PRESSED
+0029 DBFB             46         DJNZ R3, DEBOUNCE_MINUS
+                      47     ;    DEC _temperature_set
+002B                  48     WAIT_RELEASE_MINUS:
+002B 3081FD           49         JNB P0.1, WAIT_RELEASE_MINUS
+002E 22               50         RET
+                      51     end
+A51 MACRO ASSEMBLER  CONTROL                                                              05/18/2024 22:32:29 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E               T Y P E  V A L U E   ATTRIBUTES
+
+BUTTON_MINUS_PRESSED  C ADDR   0024H   R   SEG=RUTINACONTROL
+BUTTON_PLUS_PRESSED.  C ADDR   0017H   R   SEG=RUTINACONTROL
+CONTROL_ . . . . . .  N NUMB   -----       
+DEBOUNCE_MINUS . . .  C ADDR   0026H   R   SEG=RUTINACONTROL
+DEBOUNCE_PLUS. . . .  C ADDR   0019H   R   SEG=RUTINACONTROL
+DONE . . . . . . . .  C ADDR   000FH   R   SEG=RUTINACONTROL
+P0 . . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . . .  D ADDR   0090H   A   
+RUTINACONTROL. . . .  C SEG    002FH       REL=UNIT
+START_RELAY. . . . .  C ADDR   0009H   R   SEG=RUTINACONTROL
+STOP_RELAY . . . . .  C ADDR   000DH   R   SEG=RUTINACONTROL
+WAIT_RELEASE_MINUS .  C ADDR   002BH   R   SEG=RUTINACONTROL
+WAIT_RELEASE_PLUS. .  C ADDR   0020H   R   SEG=RUTINACONTROL
+_CHECK_BUTTONS . . .  C ADDR   0010H   R   SEG=RUTINACONTROL
+_CONTROL_RELAY . . .  C ADDR   0000H   R   SEG=RUTINACONTROL
+_DELAY_MS. . . . . .  C ADDR   -----       EXT
+_TEMPERATURE_SET . .  D ADDR   -----       EXT
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
